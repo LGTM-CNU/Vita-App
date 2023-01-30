@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:vita/Screen/Main.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -25,7 +27,12 @@ class _LoginScreenState extends State<LoginScreen> {
     // check id, pw
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setBool('isLogin', true);
-    Navigator.of(context).pushNamed('/main');
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+        builder: (context) => MainScreen(),
+      )
+    );
   }
 
   @override

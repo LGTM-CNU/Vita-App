@@ -1,48 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ChattingWidget extends StatefulWidget {
   @override
   _ChattingWidgetState createState() => _ChattingWidgetState();
 }
 
-class _ChattingWidgetState extends State<ChattingWidget>{
-
-  void prefClear() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.clear();
-  }
+class _ChattingWidgetState extends State<ChattingWidget> {
+  final _controller = TextEditingController();
 
   @override
-  Widget build(BuildContext context){
-    return (
-      Container(
-        child:
-          Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: 120),
-                child: ElevatedButton(
-                  child: Text('go to login from chat'),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              children: [
+                Container(
+                  height: 100,
+                  color: Colors.yellow,
+                  child: Center(
+                    child: Text("Chat messages will appear here"),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            height: 50,
+            color: Colors.grey[200],
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      hintText: "Enter a message",
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.mic),
                   onPressed: () {
-                    print("go login");
-                    Navigator.of(context).pushNamed('/login');
+                    // send message by voice
                   },
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 120),
-                child: ElevatedButton(
-                  child: Text('clear'),
+                IconButton(
+                  icon: Icon(Icons.send),
                   onPressed: () {
-                    print("pref clear");
-                    prefClear();
+                    // send message by text
                   },
                 ),
-              ),
-            ],
-          )
-      )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

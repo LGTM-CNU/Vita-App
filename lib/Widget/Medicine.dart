@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:vita/Widget/MedicineCard.dart';
+import 'package:vita/Screen/NewMedicine.dart';
 
 class MedicineWidget extends StatefulWidget {
   @override
@@ -27,7 +29,21 @@ class _MedicineWidgetState extends State<MedicineWidget>{
                     children: [
                       for (var title in medicines)...[
                         MedicineCard(title: title)
-                      ]
+                      ],
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/new_medicine');
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child:
+                            Container(
+                            width: 150,
+                            height: 160,
+                            color: Colors.grey,
+                            child: Text("add Medicine")
+                        )),
+                      )
                     ],
                   )
               )

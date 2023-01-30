@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MedicineCard extends StatefulWidget {
   const MedicineCard({Key? key, required this.title}): super(key: key);

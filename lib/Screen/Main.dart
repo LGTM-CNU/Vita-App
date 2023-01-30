@@ -5,6 +5,8 @@ import 'package:vita/Widget/bottomNavigationBar.dart';
 import 'package:vita/Widget/Chatting.dart';
 import 'package:vita/Widget/Medicine.dart';
 
+import 'Login.dart';
+
 class MainScreen extends StatefulWidget {
   @override
   MainScreenState createState() => MainScreenState();
@@ -17,10 +19,14 @@ class MainScreenState extends State<MainScreen> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var value = pref.getBool('isLogin');
 
-    print("===== in main page=======");
-    print(value);
-
-    if (value != null && !value) Navigator.of(context).pushNamed('/login');
+    if (value != null && !value) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginScreen(),
+          )
+      );
+    }
   }
 
   @override

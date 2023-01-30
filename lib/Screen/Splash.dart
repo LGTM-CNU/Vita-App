@@ -15,9 +15,6 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var value = pref.getBool('isLogin');
 
-    print("===== in splash =======");
-    print(value);
-
     if (value != null && value) return true;
     return false;
   }

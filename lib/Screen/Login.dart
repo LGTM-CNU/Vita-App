@@ -17,10 +17,14 @@ class _LoginScreenState extends State<LoginScreen> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var value = pref.getBool('isLogin');
 
-    print("===== in login =======");
-    print(value);
-
-    if (value != null && value) Navigator.of(context).pushNamed('/main');
+    if (value != null && value) {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MainScreen(),
+          )
+      );
+    }
   }
 
   void _loginHandler() async {

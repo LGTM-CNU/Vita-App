@@ -18,8 +18,14 @@ class _MedicineCardState extends State<MedicineCard>{
       child: Container(
           width: 150,
           height: 160,
-          color: Colors.red,
-          child: Text(widget.title)
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.red,
+          ),
+          child: Align(
+              alignment: Alignment.center,
+              child: Text(widget.title)
+          )
       ),
     )
     );

@@ -40,8 +40,14 @@ class _MedicineWidgetState extends State<MedicineWidget>{
                             Container(
                             width: 150,
                             height: 160,
-                            color: Colors.grey,
-                            child: Text("add Medicine")
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.grey,
+                            ),
+                            child: Align(
+                                alignment: Alignment.center,
+                                child: Text("add Medicine")
+                            )
                         )),
                       )
                     ],

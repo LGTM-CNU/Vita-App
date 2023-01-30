@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vita/Widget/MedicineCard.dart';
 
 class MedicineWidget extends StatefulWidget {
   @override
@@ -6,19 +7,32 @@ class MedicineWidget extends StatefulWidget {
 }
 
 class _MedicineWidgetState extends State<MedicineWidget>{
+
+  final medicines = ["엄준비 1", "엄준비 2", "돌아온 럭키짱"];
+
   @override
   Widget build(BuildContext context){
     return (
-      Container(
-        margin: EdgeInsets.only(top: 120),
-        child: ElevatedButton(
-          child: Text('go to login from medicine'),
-          onPressed: () {
-            print("go back");
-            Navigator.of(context).pushNamed('/login');
-          },
-        ),
-      )
+    SafeArea(
+      child:
+          Padding(
+            padding: EdgeInsets.only(top: 30),
+            child:
+              Align(
+                  alignment: Alignment.topCenter,
+                  child:
+                  Wrap(
+                    runSpacing: 20.0,
+                    spacing: 20.0,
+                    children: [
+                      for (var title in medicines)...[
+                        MedicineCard(title: title)
+                      ]
+                    ],
+                  )
+              )
+          )
+    )
     );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import './LoginScreen.dart';
-import './MainScreen.dart';
-import './SplashScreen.dart';
+import './Screen/Login.dart';
+import './Screen/Main.dart';
+import './Screen/Splash.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
       home: SplashScreen(),
       initialRoute: '/',
       routes: {
-        '/login': (context) => LoginPage(),
-        '/main': (context) => MainPage(),
+        '/login': (context) => LoginScreen(),
+        '/main': (context) => MainScreen(),
       },
       theme: ThemeData(
         primarySwatch: Colors.orange,

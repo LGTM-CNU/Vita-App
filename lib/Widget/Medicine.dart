@@ -15,7 +15,7 @@ class _MedicineWidgetState extends State<MedicineWidget> {
   Widget build(BuildContext context) {
     return (SafeArea(
         child: Padding(
-            padding: EdgeInsets.only(top: 30),
+            padding: const EdgeInsets.only(top: 30),
             child: Align(
                 alignment: Alignment.topCenter,
                 child: Wrap(
@@ -30,7 +30,7 @@ class _MedicineWidgetState extends State<MedicineWidget> {
                         Navigator.of(context).pushNamed('/new_medicine');
                       },
                       child: Padding(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           child: Container(
                               width: 150,
                               height: 160,
@@ -38,7 +38,7 @@ class _MedicineWidgetState extends State<MedicineWidget> {
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.grey,
                               ),
-                              child: Align(
+                              child: const Align(
                                   alignment: Alignment.center,
                                   child: Text("add Medicine")))),
                     )

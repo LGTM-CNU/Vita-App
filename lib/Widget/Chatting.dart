@@ -12,7 +12,7 @@ class ChattingWidget extends StatefulWidget {
 class _ChattingWidgetState extends State<ChattingWidget> {
   final _controller = TextEditingController();
 
-  var _chattingMessages = [
+  final _chattingMessages = [
     {'isMe': true, 'message': "123"},
     {'isMe': false, 'message': 'from vita'},
     {'isMe': true, 'message': 'hello HJ'}
@@ -23,7 +23,6 @@ class _ChattingWidgetState extends State<ChattingWidget> {
     print('mic !');
     try {
       PermissionStatus status = await Permission.microphone.request();
-      PermissionStatus status1 = await Permission.notification.request();
 
       if (status == PermissionStatus.granted) {
         print('allow !');
@@ -38,52 +37,56 @@ class _ChattingWidgetState extends State<ChattingWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: [
-        Expanded(
-          child: ListView(
-            children: [
-              for (var chatMessage in _chattingMessages) ...[
-                ChatMessage(
-                    isMe: chatMessage['isMe'] as bool,
-                    message: chatMessage['message'] as String)
-              ]
-            ],
-          ),
-        ),
-        Container(
-          height: 50,
-          color: Colors.grey[200],
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _controller,
-                  decoration: InputDecoration(
-                    hintText: "Enter a message",
+        body: Padding(
+            padding: const EdgeInsets.only(top: 30),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    children: [
+                      for (var chatMessage in _chattingMessages) ...[
+                        ChatMessage(
+                            isMe: chatMessage['isMe'] as bool,
+                            message: chatMessage['message'] as String)
+                      ]
+                    ],
                   ),
                 ),
-              ),
-              IconButton(
-                icon: Icon(Icons.mic),
-                onPressed: _onMicPressHandler,
-              ),
-              IconButton(
-                icon: Icon(Icons.send),
-                onPressed: () {
-                  setState(() {
-                    _chattingMessages.add({
-                      'isMe': true,
-                      'message': _controller.text,
-                    });
-                  });
-                  _controller.clear();
-                },
-              ),
-            ],
-          ),
-        ),
-      ],
-    ));
+                Container(
+                  height: 50,
+                  color: Colors.grey[200],
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: TextField(
+                          controller: _controller,
+                          decoration: const InputDecoration(
+                            hintText: "Enter a message",
+                          ),
+                        ),
+                      )),
+                      IconButton(
+                        icon: const Icon(Icons.mic),
+                        onPressed: _onMicPressHandler,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.send),
+                        onPressed: () {
+                          setState(() {
+                            _chattingMessages.add({
+                              'isMe': true,
+                              'message': _controller.text,
+                            });
+                          });
+                          _controller.clear();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )));
   }
 }

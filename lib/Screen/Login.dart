@@ -52,9 +52,9 @@ class _LoginScreenState extends State<LoginScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(bottom: 20, left: 50, right: 50),
+            margin: const EdgeInsets.only(bottom: 20, left: 50, right: 50),
             child: TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Username',
                 hintText: 'Enter your username',
               ),
@@ -66,9 +66,9 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(bottom: 20, left: 50, right: 50),
+            margin: const EdgeInsets.only(bottom: 20, left: 50, right: 50),
             child: TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Password',
                 hintText: 'Enter your password',
               ),
@@ -80,23 +80,20 @@ class _LoginScreenState extends State<LoginScreen> {
               obscureText: true,
             ),
           ),
-          Container(
-            child: Switch(
-              value: _isManager,
-              onChanged: (value) {
-                setState(() {
-                  _isManager = value;
-                });
-              },
-            ),
+          Switch(
+            value: _isManager,
+            onChanged: (value) {
+              setState(() {
+                _isManager = value;
+              });
+            },
           ),
           Container(
-            margin: EdgeInsets.only(top: 20),
+            margin: const EdgeInsets.only(top: 20),
             child: ElevatedButton(
-              child: Text('Sign in'),
+              child: const Text('Sign in'),
               onPressed: () {
                 // Sign in logic here
-                print("check user");
                 _loginHandler();
               },
             ),

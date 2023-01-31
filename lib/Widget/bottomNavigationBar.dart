@@ -11,7 +11,6 @@ class BottomNavigationBars extends StatefulWidget {
 }
 
 class _BottomNavigationBarsState extends State<BottomNavigationBars> {
-
   void _onItemTapped(int index) {
     // 개발 모드 예외처리
     if (index == 2) {
@@ -21,13 +20,13 @@ class _BottomNavigationBarsState extends State<BottomNavigationBars> {
             context,
             MaterialPageRoute(
               builder: (context) => LoginScreen(),
-            )
-        );
+            ));
       });
-      return ;
+      return;
     }
-    MainScreenState? parentState = context.findAncestorStateOfType<MainScreenState>();
-    if (parentState == null) return ;
+    MainScreenState? parentState =
+        context.findAncestorStateOfType<MainScreenState>();
+    if (parentState == null) return;
     parentState.setState(() {
       parentState.selectedIndex = index;
     });
@@ -35,7 +34,8 @@ class _BottomNavigationBarsState extends State<BottomNavigationBars> {
 
   @override
   Widget build(BuildContext context) {
-    MainScreenState? parentState = context.findAncestorStateOfType<MainScreenState>();
+    MainScreenState? parentState =
+        context.findAncestorStateOfType<MainScreenState>();
 
     return BottomNavigationBar(
       items: const [
@@ -48,10 +48,10 @@ class _BottomNavigationBarsState extends State<BottomNavigationBars> {
           label: 'Chatting',
         ),
         if (kDebugMode)
-        BottomNavigationBarItem(
-          icon: Icon(Icons.login),
-          label: 'Login',
-        )
+          BottomNavigationBarItem(
+            icon: Icon(Icons.login),
+            label: 'Login',
+          )
       ],
       currentIndex: parentState == null ? 0 : parentState.selectedIndex,
       selectedItemColor: Colors.blue,

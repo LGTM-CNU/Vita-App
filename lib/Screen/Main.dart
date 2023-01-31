@@ -24,8 +24,7 @@ class MainScreenState extends State<MainScreen> {
           context,
           MaterialPageRoute(
             builder: (context) => LoginScreen(),
-          )
-      );
+          ));
     }
   }
 
@@ -41,16 +40,13 @@ class MainScreenState extends State<MainScreen> {
     ChattingWidget()
   ];
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-          child: _widgetOptions.elementAt(selectedIndex),
-        ),
-        appBar: AppBar(
-            title: Text("Hello Vita")
+      body: SafeArea(
+        child: _widgetOptions.elementAt(selectedIndex),
       ),
+      appBar: AppBar(title: Text("Hello Vita")),
       bottomNavigationBar: BottomNavigationBars(),
     );
   }

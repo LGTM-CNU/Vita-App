@@ -1,4 +1,7 @@
+import 'dart:ui';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 
 class ChattingWidget extends StatefulWidget {
   @override
@@ -7,6 +10,23 @@ class ChattingWidget extends StatefulWidget {
 
 class _ChattingWidgetState extends State<ChattingWidget> {
   final _controller = TextEditingController();
+
+  // aos => AndroidMainfest.xml과 ios => info.plist 추가 해야함
+  _onMicPressHandler() async {
+    print('mic !');
+    try {
+      PermissionStatus status = await Permission.microphone.request();
+      PermissionStatus status1 = await Permission.notification.request();
+
+      if (status == PermissionStatus.granted) {
+        print('allow !');
+      } else {
+        print('not allowed');
+      }
+    } on RecordingPermissionException catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +61,7 @@ class _ChattingWidgetState extends State<ChattingWidget> {
                 ),
                 IconButton(
                   icon: Icon(Icons.mic),
-                  onPressed: () {
-                    // send message by voice
-                  },
+                  onPressed: _onMicPressHandler,
                 ),
                 IconButton(
                   icon: Icon(Icons.send),

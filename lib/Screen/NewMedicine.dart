@@ -5,19 +5,14 @@ class NewMedicine extends StatefulWidget {
   _NewMedicineState createState() => _NewMedicineState();
 }
 
-class _NewMedicineState extends State<NewMedicine>{
-
+class _NewMedicineState extends State<NewMedicine> {
   @override
-  Widget build(BuildContext context){
-    return (
-        Scaffold(
-          appBar: AppBar(
-            title: Text("add Medicine")
-          ),
-          body: Container(
-            child: Text("this is add Medicine Screen"),
-          ),
-        )
-    );
+  Widget build(BuildContext context) {
+    return (Scaffold(
+      appBar: AppBar(title: Text("add Medicine")),
+      body: Container(
+        child: Text("this is add Medicine Screen"),
+      ),
+    ));
   }
 }

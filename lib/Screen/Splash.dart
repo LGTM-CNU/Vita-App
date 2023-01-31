@@ -23,16 +23,16 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     _checkLogin().then((value) => Timer(Duration(seconds: 1), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => value != true ? LoginScreen() : MainScreen()));
-    }));
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) =>
+                  value != true ? LoginScreen() : MainScreen()));
+        }));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text("Splash Screen")
-      ),
+      appBar: AppBar(title: Text("Splash Screen")),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [Container()],

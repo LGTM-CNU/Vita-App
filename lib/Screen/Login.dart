@@ -22,8 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           MaterialPageRoute(
             builder: (context) => MainScreen(),
-          )
-      );
+          ));
     }
   }
 
@@ -34,9 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-        builder: (context) => MainScreen(),
-      )
-    );
+          builder: (context) => MainScreen(),
+        ));
   }
 
   @override
@@ -49,9 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text("Hello Vita")
-      ),
+      appBar: AppBar(title: Text("Hello Vita")),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

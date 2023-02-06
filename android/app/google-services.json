@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "918128777374",
+    "project_id": "vita-b53db",
+    "storage_bucket": "vita-b53db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918128777374:android:65424808c3636e19b2c38f",
+        "android_client_info": {
+          "package_name": "com.LGTM.vita"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918128777374-saj3246od0paae317vnvi55hs5thpe9b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo1uFp5igpw0J8jJ6EfW6g9LRUMxH8HmM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918128777374-saj3246od0paae317vnvi55hs5thpe9b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "918128777374-dcsr3cuitq8ugi9d8anfskoiounsadul.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.LGTM.vita"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

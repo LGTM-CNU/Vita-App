@@ -1,8 +1,7 @@
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 
 import 'package:vita/Widget/ChatMessage.dart';
+import 'package:vita/Widget/recorder.dart';
 import 'package:vita/Util/date.dart';
 
 class ChattingWidget extends StatefulWidget {
@@ -36,19 +35,15 @@ class _ChattingWidgetState extends State<ChattingWidget> {
   ];
 
   // aos => AndroidMainfest.xml과 ios => info.plist 추가 해야함
-  _onMicPressHandler() async {
-    print('mic !');
-    try {
-      PermissionStatus status = await Permission.microphone.request();
-
-      if (status == PermissionStatus.granted) {
-        print('allow !');
-      } else {
-        print('not allowed');
-      }
-    } on RecordingPermissionException catch (e) {
-      print(e);
-    }
+  _onMicPressHandler() {
+    showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        builder: (context) {
+          return Recorder();
+        });
   }
 
   _onSubmitHandler() {

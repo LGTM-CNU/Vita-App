@@ -11,12 +11,28 @@ class ChattingWidget extends StatefulWidget {
 }
 
 class _ChattingWidgetState extends State<ChattingWidget> {
-  final _controller = TextEditingController();
+  final _textController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   final _chattingMessages = [
     {'isMe': true, 'message': "123", 'time': "2023/02/01 12:30 PM"},
     {'isMe': false, 'message': 'from vita', 'time': "2023/02/01 02:01 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"}
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
   ];
 
   // aos => AndroidMainfest.xml과 ios => info.plist 추가 해야함
@@ -36,6 +52,15 @@ class _ChattingWidgetState extends State<ChattingWidget> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
@@ -43,18 +68,22 @@ class _ChattingWidgetState extends State<ChattingWidget> {
             child: Column(
               children: [
                 Expanded(
-                  child: ListView(
-                    children: [
-                      for (var chatMessage in _chattingMessages) ...[
-                        ChatMessage(
-                          isMe: chatMessage['isMe'] as bool,
-                          message: chatMessage['message'] as String,
-                          time: chatMessage['time'] as String,
-                        )
-                      ]
-                    ],
-                  ),
-                ),
+                    child: Scrollbar(
+                        controller: _scrollController,
+                        child: ListView.builder(
+                            controller: _scrollController, // 스크롤 컨트롤러
+                            scrollDirection: Axis.vertical, // 리스트 스크롤 방향
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemCount: _chattingMessages.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ChatMessage(
+                                  isMe:
+                                      _chattingMessages[index]['isMe'] as bool,
+                                  message: _chattingMessages[index]['message']
+                                      as String,
+                                  time: _chattingMessages[index]['time']
+                                      as String);
+                            }))),
                 Container(
                   height: 50,
                   color: Colors.grey[200],
@@ -64,7 +93,7 @@ class _ChattingWidgetState extends State<ChattingWidget> {
                           child: Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: TextField(
-                          controller: _controller,
+                          controller: _textController,
                           decoration: const InputDecoration(
                             hintText: "Enter a message",
                           ),
@@ -80,11 +109,15 @@ class _ChattingWidgetState extends State<ChattingWidget> {
                           setState(() {
                             _chattingMessages.add({
                               'isMe': true,
-                              'message': _controller.text,
+                              'message': _textController.text,
                               'time': Date.serialize(DateTime.now()),
                             });
                           });
-                          _controller.clear();
+                          _textController.clear();
+                          WidgetsBinding.instance!.addPostFrameCallback((_) {
+                            _scrollController.jumpTo(
+                                _scrollController.position.maxScrollExtent);
+                          });
                         },
                       ),
                     ],

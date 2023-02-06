@@ -8,9 +8,26 @@ class NewMedicine extends StatefulWidget {
 class _NewMedicineState extends State<NewMedicine> {
   @override
   Widget build(BuildContext context) {
-    return (Scaffold(
-      appBar: AppBar(title: const Text("add Medicine")),
-      body: const Text("this is add Medicine Screen"),
-    ));
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('DraggableScrollableSheet'),
+      ),
+      body: SizedBox.expand(
+        child: DraggableScrollableSheet(
+          builder: (BuildContext context, ScrollController scrollController) {
+            return Container(
+              color: Colors.blue[100],
+              child: ListView.builder(
+                controller: scrollController,
+                itemCount: 25,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(title: Text('Item $index'));
+                },
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }

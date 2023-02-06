@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class ChatMessage extends StatelessWidget {
   final bool isMe;
   final String message;
+  final String time;
 
-  ChatMessage({required this.isMe, required this.message});
+  ChatMessage({required this.isMe, required this.message, required this.time});
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +54,8 @@ class ChatMessage extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      child: const Text(
-                        "12:30 PM",
+                      child: Text(
+                        time,
                         style: TextStyle(
                           fontSize: 10.0,
                           color: Colors.grey,

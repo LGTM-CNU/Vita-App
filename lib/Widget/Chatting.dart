@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
 import 'package:vita/Widget/ChatMessage.dart';
+import 'package:vita/Util/date.dart';
 
 class ChattingWidget extends StatefulWidget {
   @override
@@ -13,9 +14,9 @@ class _ChattingWidgetState extends State<ChattingWidget> {
   final _controller = TextEditingController();
 
   final _chattingMessages = [
-    {'isMe': true, 'message': "123"},
-    {'isMe': false, 'message': 'from vita'},
-    {'isMe': true, 'message': 'hello HJ'}
+    {'isMe': true, 'message': "123", 'time': "2023/02/01 12:30 PM"},
+    {'isMe': false, 'message': 'from vita', 'time': "2023/02/01 02:01 PM"},
+    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"}
   ];
 
   // aos => AndroidMainfest.xml과 ios => info.plist 추가 해야함
@@ -46,8 +47,10 @@ class _ChattingWidgetState extends State<ChattingWidget> {
                     children: [
                       for (var chatMessage in _chattingMessages) ...[
                         ChatMessage(
-                            isMe: chatMessage['isMe'] as bool,
-                            message: chatMessage['message'] as String)
+                          isMe: chatMessage['isMe'] as bool,
+                          message: chatMessage['message'] as String,
+                          time: chatMessage['time'] as String,
+                        )
                       ]
                     ],
                   ),
@@ -78,6 +81,7 @@ class _ChattingWidgetState extends State<ChattingWidget> {
                             _chattingMessages.add({
                               'isMe': true,
                               'message': _controller.text,
+                              'time': Date.serialize(DateTime.now()),
                             });
                           });
                           _controller.clear();

@@ -51,6 +51,20 @@ class _ChattingWidgetState extends State<ChattingWidget> {
     }
   }
 
+  _onSubmitHandler() {
+    setState(() {
+      _chattingMessages.add({
+        'isMe': true,
+        'message': _textController.text,
+        'time': Date.serialize(DateTime.now()),
+      });
+    });
+    _textController.clear();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -94,9 +108,13 @@ class _ChattingWidgetState extends State<ChattingWidget> {
                         padding: const EdgeInsets.only(left: 10),
                         child: TextField(
                           controller: _textController,
+                          textInputAction: TextInputAction.go,
                           decoration: const InputDecoration(
                             hintText: "Enter a message",
                           ),
+                          onSubmitted: (value) async {
+                            _onSubmitHandler();
+                          },
                         ),
                       )),
                       IconButton(
@@ -105,20 +123,7 @@ class _ChattingWidgetState extends State<ChattingWidget> {
                       ),
                       IconButton(
                         icon: const Icon(Icons.send),
-                        onPressed: () {
-                          setState(() {
-                            _chattingMessages.add({
-                              'isMe': true,
-                              'message': _textController.text,
-                              'time': Date.serialize(DateTime.now()),
-                            });
-                          });
-                          _textController.clear();
-                          WidgetsBinding.instance!.addPostFrameCallback((_) {
-                            _scrollController.jumpTo(
-                                _scrollController.position.maxScrollExtent);
-                          });
-                        },
+                        onPressed: _onSubmitHandler,
                       ),
                     ],
                   ),

@@ -52,6 +52,10 @@ class _ChattingWidgetState extends State<ChattingWidget> {
   }
 
   _onSubmitHandler() {
+    if (_textController.text.isEmpty) {
+      FocusScope.of(context).unfocus();
+      return;
+    }
     setState(() {
       _chattingMessages.add({
         'isMe': true,
@@ -63,6 +67,7 @@ class _ChattingWidgetState extends State<ChattingWidget> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
+    FocusScope.of(context).unfocus();
   }
 
   @override
@@ -75,60 +80,70 @@ class _ChattingWidgetState extends State<ChattingWidget> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Column(
-              children: [
-                Expanded(
-                    child: Scrollbar(
-                        controller: _scrollController,
-                        child: ListView.builder(
-                            controller: _scrollController, // 스크롤 컨트롤러
-                            scrollDirection: Axis.vertical, // 리스트 스크롤 방향
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemCount: _chattingMessages.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return ChatMessage(
-                                  isMe:
-                                      _chattingMessages[index]['isMe'] as bool,
-                                  message: _chattingMessages[index]['message']
-                                      as String,
-                                  time: _chattingMessages[index]['time']
-                                      as String);
-                            }))),
-                Container(
-                  height: 50,
-                  color: Colors.grey[200],
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: TextField(
-                          controller: _textController,
-                          textInputAction: TextInputAction.go,
-                          decoration: const InputDecoration(
-                            hintText: "Enter a message",
+    return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+            body: Padding(
+                padding: const EdgeInsets.only(top: 30),
+                child: Column(
+                  children: [
+                    Expanded(
+                        child: Scrollbar(
+                            controller: _scrollController,
+                            child: ListView.builder(
+                                controller: _scrollController, // 스크롤 컨트롤러
+                                scrollDirection: Axis.vertical, // 리스트 스크롤 방향
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                itemCount: _chattingMessages.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return ChatMessage(
+                                      isMe: _chattingMessages[index]['isMe']
+                                          as bool,
+                                      message: _chattingMessages[index]
+                                          ['message'] as String,
+                                      time: _chattingMessages[index]['time']
+                                          as String);
+                                }))),
+                    Container(
+                      height: 50,
+                      color: Colors.grey[200],
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: TextField(
+                              controller: _textController,
+                              textInputAction: TextInputAction.go,
+                              decoration: const InputDecoration(
+                                hintText: "Enter a message",
+                              ),
+                              onSubmitted: (value) async {
+                                _onSubmitHandler();
+                              },
+                            ),
+                          )),
+                          IconButton(
+                            icon: const Icon(Icons.mic),
+                            onPressed: _onMicPressHandler,
                           ),
-                          onSubmitted: (value) async {
-                            _onSubmitHandler();
-                          },
-                        ),
-                      )),
-                      IconButton(
-                        icon: const Icon(Icons.mic),
-                        onPressed: _onMicPressHandler,
+                          IconButton(
+                            icon: const Icon(Icons.send),
+                            onPressed: _onSubmitHandler,
+                          ),
+                        ],
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.send),
-                        onPressed: _onSubmitHandler,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            )));
+                    ),
+                  ],
+                ))));
   }
 }

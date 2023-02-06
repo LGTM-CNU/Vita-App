@@ -4,6 +4,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
+import 'package:vita/Util/Firebase.dart';
+
 class Recorder extends StatefulWidget {
   @override
   _RecorderState createState() => _RecorderState();
@@ -33,6 +35,8 @@ class _RecorderState extends State<Recorder> {
     });
 
     print('record audio: $audioFile');
+
+    await Firebase.save(audioFile);
   }
 
   Future initRecorder() async {

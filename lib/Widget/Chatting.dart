@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:vita/Widget/ChatMessage.dart';
-import 'package:vita/Widget/recorder.dart';
+import 'package:vita/Widget/Recorder.dart';
 import 'package:vita/Util/date.dart';
 
 class ChattingWidget extends StatefulWidget {

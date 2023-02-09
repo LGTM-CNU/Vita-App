@@ -37,25 +37,27 @@ class _BottomNavigationBarsState extends State<BottomNavigationBars> {
     MainScreenState? parentState =
         context.findAncestorStateOfType<MainScreenState>();
 
-    return BottomNavigationBar(
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.medical_information),
-          label: 'Medicine',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.chat),
-          label: 'Chatting',
-        ),
-        if (kDebugMode)
-          BottomNavigationBarItem(
-            icon: Icon(Icons.login),
-            label: 'Login',
-          )
-      ],
-      currentIndex: parentState == null ? 0 : parentState.selectedIndex,
-      selectedItemColor: Colors.blue,
-      onTap: _onItemTapped,
-    );
+    return SizedBox(
+        height: 100,
+        child: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.medical_information),
+              label: '약 등록 화면',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat),
+              label: '대화 기록 보기',
+            ),
+            if (kDebugMode)
+              BottomNavigationBarItem(
+                icon: Icon(Icons.login),
+                label: 'Login',
+              )
+          ],
+          currentIndex: parentState == null ? 0 : parentState.selectedIndex,
+          selectedItemColor: Colors.blue,
+          onTap: _onItemTapped,
+        ));
   }
 }

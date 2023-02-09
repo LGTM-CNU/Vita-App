@@ -7,10 +7,10 @@ class Firebase {
     final storageRef = FirebaseStorage.instance.ref();
 
 // Create a reference to "mountains.jpg"
-    final mountainsRef = storageRef.child("temp.mp3");
+    final mountainsRef = storageRef.child("temp1.wav");
 
 // Create a reference to 'images/mountains.jpg'
-    final mountainImagesRef = storageRef.child("voice/temp.mp3");
+    final mountainImagesRef = storageRef.child("voice/temp1.wav");
 
 // While the file names are the same, the references point to different files
     assert(mountainsRef.name == mountainImagesRef.name);

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:audio_session/audio_session.dart';
 
 import 'package:vita/Util/Firebase.dart';
 
@@ -18,11 +19,13 @@ class _RecorderState extends State<Recorder> {
 
   Future record() async {
     if (!isRecorderReady) return;
-    await recorder.startRecorder(toFile: 'audio');
+    await recorder.startRecorder(toFile: 'temp1.wav', codec: Codec.pcm16WAV);
 
     setState(() {
       isRecord = true;
     });
+
+    print("record start !!!!!!!!!!!!!!!!");
   }
 
   Future stop() async {
@@ -44,7 +47,28 @@ class _RecorderState extends State<Recorder> {
 
     if (status != PermissionStatus.granted) {
       throw "Microphone permission not granted";
+    } else {
+      print("======================micro phone granted=====================");
     }
+
+    final session = await AudioSession.instance;
+    await session.configure(AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+      avAudioSessionCategoryOptions:
+          AVAudioSessionCategoryOptions.allowBluetooth |
+              AVAudioSessionCategoryOptions.defaultToSpeaker,
+      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
+      avAudioSessionRouteSharingPolicy:
+          AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+      androidAudioAttributes: const AndroidAudioAttributes(
+        contentType: AndroidAudioContentType.speech,
+        flags: AndroidAudioFlags.none,
+        usage: AndroidAudioUsage.voiceCommunication,
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+      androidWillPauseWhenDucked: true,
+    ));
 
     await recorder.openRecorder();
 
@@ -79,9 +103,10 @@ class _RecorderState extends State<Recorder> {
           StreamBuilder<RecordingDisposition>(
               stream: recorder.onProgress,
               builder: (context, snapshot) {
-                final duration =
+                var duration =
                     snapshot.hasData ? snapshot.data!.duration : Duration.zero;
 
+                print('test: ${duration.inSeconds} ${snapshot.data}');
                 return Text(
                   '${duration.inSeconds}s',
                   style: const TextStyle(
@@ -96,7 +121,7 @@ class _RecorderState extends State<Recorder> {
               size: 80,
             ),
             onPressed: () async {
-              if (recorder.isRecording) {
+              if (isRecord) {
                 await stop();
               } else {
                 await record();

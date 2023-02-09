@@ -16,22 +16,6 @@ class _ChattingWidgetState extends State<ChattingWidget> {
   final _chattingMessages = [
     {'isMe': true, 'message': "123", 'time': "2023/02/01 12:30 PM"},
     {'isMe': false, 'message': 'from vita', 'time': "2023/02/01 02:01 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
-    {'isMe': true, 'message': 'hello HJ', 'time': "2023/02/02 04:21 PM"},
   ];
 
   // aos => AndroidMainfest.xml과 ios => info.plist 추가 해야함
@@ -59,7 +43,7 @@ class _ChattingWidgetState extends State<ChattingWidget> {
       });
     });
     _textController.clear();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
     FocusScope.of(context).unfocus();
@@ -69,7 +53,7 @@ class _ChattingWidgetState extends State<ChattingWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
   }
@@ -87,58 +71,68 @@ class _ChattingWidgetState extends State<ChattingWidget> {
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
-            body: Padding(
-                padding: const EdgeInsets.only(top: 30),
-                child: Column(
-                  children: [
-                    Expanded(
-                        child: Scrollbar(
-                            controller: _scrollController,
-                            child: ListView.builder(
-                                controller: _scrollController, // 스크롤 컨트롤러
-                                scrollDirection: Axis.vertical, // 리스트 스크롤 방향
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                itemCount: _chattingMessages.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return ChatMessage(
-                                      isMe: _chattingMessages[index]['isMe']
-                                          as bool,
-                                      message: _chattingMessages[index]
-                                          ['message'] as String,
-                                      time: _chattingMessages[index]['time']
-                                          as String);
-                                }))),
-                    Container(
-                      height: 50,
-                      color: Colors.grey[200],
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: TextField(
-                              controller: _textController,
-                              textInputAction: TextInputAction.go,
-                              decoration: const InputDecoration(
-                                hintText: "Enter a message",
+            body: Container(
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                  image: AssetImage('assets/background.png'),
+                  repeat: ImageRepeat.repeat,
+                  opacity: 0.7,
+                )),
+                child: Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Column(
+                      children: [
+                        Expanded(
+                            child: Scrollbar(
+                                controller: _scrollController,
+                                child: ListView.builder(
+                                    controller: _scrollController, // 스크롤 컨트롤러
+                                    scrollDirection:
+                                        Axis.vertical, // 리스트 스크롤 방향
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
+                                    itemCount: _chattingMessages.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return ChatMessage(
+                                          isMe: _chattingMessages[index]['isMe']
+                                              as bool,
+                                          message: _chattingMessages[index]
+                                              ['message'] as String,
+                                          time: _chattingMessages[index]['time']
+                                              as String);
+                                    }))),
+                        Container(
+                          height: 50,
+                          color: Colors.white,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: TextField(
+                                  controller: _textController,
+                                  textInputAction: TextInputAction.go,
+                                  decoration: const InputDecoration(
+                                    hintText: "Enter a message",
+                                  ),
+                                  onSubmitted: (value) async {
+                                    _onSubmitHandler();
+                                  },
+                                ),
+                              )),
+                              IconButton(
+                                icon: const Icon(Icons.mic),
+                                onPressed: _onMicPressHandler,
                               ),
-                              onSubmitted: (value) async {
-                                _onSubmitHandler();
-                              },
-                            ),
-                          )),
-                          IconButton(
-                            icon: const Icon(Icons.mic),
-                            onPressed: _onMicPressHandler,
+                              IconButton(
+                                icon: const Icon(Icons.send),
+                                onPressed: _onSubmitHandler,
+                              ),
+                            ],
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.send),
-                            onPressed: _onSubmitHandler,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ))));
+                        ),
+                      ],
+                    )))));
   }
 }

@@ -50,7 +50,6 @@ class MainScreenState extends State<MainScreen> {
       body: SafeArea(
         child: _widgetOptions.elementAt(selectedIndex),
       ),
-      appBar: AppBar(title: Text("Hello Vita")),
       bottomNavigationBar: BottomNavigationBars(),
     );
   }

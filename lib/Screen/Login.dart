@@ -11,7 +11,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String _username = "";
   String _password = "";
-  bool _isManager = false;
 
   void _loadIsLogin() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -47,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Hello Vita")),
+      appBar: AppBar(title: Text("로그인")),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -55,8 +54,8 @@ class _LoginScreenState extends State<LoginScreen> {
             margin: const EdgeInsets.only(bottom: 20, left: 50, right: 50),
             child: TextField(
               decoration: const InputDecoration(
-                labelText: 'Username',
-                hintText: 'Enter your username',
+                labelText: '사용자 아이디',
+                hintText: '아이디를 입력해주세요.',
               ),
               onChanged: (value) {
                 setState(() {
@@ -69,8 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
             margin: const EdgeInsets.only(bottom: 20, left: 50, right: 50),
             child: TextField(
               decoration: const InputDecoration(
-                labelText: 'Password',
-                hintText: 'Enter your password',
+                labelText: '비밀번호',
+                hintText: '비밀번호를 입력해주세요.',
               ),
               onChanged: (value) {
                 setState(() {
@@ -80,18 +79,10 @@ class _LoginScreenState extends State<LoginScreen> {
               obscureText: true,
             ),
           ),
-          Switch(
-            value: _isManager,
-            onChanged: (value) {
-              setState(() {
-                _isManager = value;
-              });
-            },
-          ),
           Container(
             margin: const EdgeInsets.only(top: 20),
             child: ElevatedButton(
-              child: const Text('Sign in'),
+              child: const Text('로그인'),
               onPressed: () {
                 // Sign in logic here
                 _loginHandler();

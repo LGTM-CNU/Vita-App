@@ -18,6 +18,7 @@ dependencies:
   firebase_core: ^2.4.1
   firebase_storage: ^11.0.10
   path_provider: ^2.0.12
+  audio_session: ^0.1.13
 
 dev_dependencies:
   flutter_test:
@@ -27,3 +28,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/background.png
+    - assets/medicine1.png
+    - assets/medicine2.png
+    - assets/medicine3.png
+    - assets/medicine4.png

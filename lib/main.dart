@@ -5,8 +5,8 @@ import 'package:vita/Screen/Login.dart';
 import 'package:vita/Screen/Main.dart';
 import 'package:vita/Screen/Splash.dart';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/login': (context) => LoginScreen(),
-        '/main': (context) => MainScreen(),
+        '/main': (context) => const MainScreen(),
         '/new_medicine': (context) => NewMedicine(),
       },
       theme: ThemeData(

@@ -1,6 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.LGTM.vita">
-   <application
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+
+    <application
         android:label="vita"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

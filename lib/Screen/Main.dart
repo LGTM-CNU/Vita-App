@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:vita/Widget/bottomNavigationBar.dart';
@@ -36,7 +35,6 @@ class MainScreenState extends State<MainScreen> {
     super.initState();
 
     _checkLogin();
-    Permission.notification.request();
   }
 
   final List<Widget> _widgetOptions = <Widget>[

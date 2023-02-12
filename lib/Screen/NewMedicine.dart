@@ -4,10 +4,10 @@ import 'package:vita/Widget/TimePicker.dart';
 
 class NewMedicine extends StatefulWidget {
   @override
-  _NewMedicineState createState() => _NewMedicineState();
+  NewMedicineState createState() => NewMedicineState();
 }
 
-class _NewMedicineState extends State<NewMedicine> {
+class NewMedicineState extends State<NewMedicine> {
   var _selectedMedicineType;
   var _medicineName = '';
   var _randomImg = '';
@@ -104,7 +104,7 @@ class _NewMedicineState extends State<NewMedicine> {
             },
           ),
           for (var i = 0; i < selectedTimeList.length; i++) ...[
-            TimePicker(selectedTime: selectedTimeList[i])
+            TimePicker(selectedTime: selectedTimeList[i], index: i)
           ],
           ElevatedButton(
             onPressed: () {

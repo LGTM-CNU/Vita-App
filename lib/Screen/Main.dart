@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:vita/Widget/bottomNavigationBar.dart';
+import 'package:vita/Widget/BottomNavigationBar.dart';
 import 'package:vita/Widget/Chatting.dart';
 import 'package:vita/Widget/Medicine.dart';
 

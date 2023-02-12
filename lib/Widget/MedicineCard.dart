@@ -45,7 +45,6 @@ class _MedicineCardState extends State<MedicineCard> {
                       decoration: BoxDecoration(
                           image: DecorationImage(
                         image: AssetImage(widget.thumbnail),
-                        repeat: ImageRepeat.repeat,
                       ))),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),

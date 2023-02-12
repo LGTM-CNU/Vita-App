@@ -8,4 +8,8 @@ class Date {
     var hour = date.hour > 12 ? date.hour - 12 : date.hour;
     return "${date.year}/${_numberToString(date.month)}/${_numberToString(date.day)} ${_numberToString(hour)}:${_numberToString(date.minute)} $meridiem";
   }
+
+  static String dateToKorean(DateTime date) {
+    return "${date.year}년 ${date.month}월 ${date.day}일";
+  }
 }

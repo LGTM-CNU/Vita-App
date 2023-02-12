@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+
 import 'package:vita/Widget/TimePicker.dart';
+import 'package:vita/Util/date.dart';
 
 class NewMedicine extends StatefulWidget {
   @override
@@ -11,6 +13,8 @@ class NewMedicineState extends State<NewMedicine> {
   var _selectedMedicineType;
   var _medicineName = '';
   var _randomImg = '';
+  var _selectedDate;
+  final _textController = TextEditingController();
 
   var selectedTimeList = [];
 
@@ -58,7 +62,8 @@ class NewMedicineState extends State<NewMedicine> {
       appBar: AppBar(
         title: const Text("약 등록 하기"),
       ),
-      body: Column(
+      body: SingleChildScrollView(
+          child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 50, bottom: 20),
@@ -102,6 +107,19 @@ class NewMedicineState extends State<NewMedicine> {
                 _selectedMedicineType = value;
               });
             },
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: TextField(
+              controller: _textController,
+              maxLines: 4,
+              decoration: InputDecoration(
+                hintText: "약에 대한 설명을 적어주세요.",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
           ),
           for (var i = 0; i < selectedTimeList.length; i++) ...[
             TimePicker(selectedTime: selectedTimeList[i], index: i)
@@ -195,7 +213,7 @@ class NewMedicineState extends State<NewMedicine> {
             ],
           )
         ],
-      ),
+      )),
     );
   }
 }

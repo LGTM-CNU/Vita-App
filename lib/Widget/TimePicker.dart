@@ -39,7 +39,7 @@ class _TimePickerState extends State<TimePicker> {
         ElevatedButton(
           onPressed: () => _selectTime(context),
           child: Text(
-            "${widget.selectedTime.hour}:${widget.selectedTime.minute}",
+            "${widget.selectedTime.hour}시 ${widget.selectedTime.minute}분",
             style: const TextStyle(color: Colors.white),
           ),
         ),

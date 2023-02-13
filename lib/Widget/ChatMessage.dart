@@ -5,7 +5,11 @@ class ChatMessage extends StatelessWidget {
   final String message;
   final String time;
 
-  ChatMessage({required this.isMe, required this.message, required this.time});
+  const ChatMessage(
+      {super.key,
+      required this.isMe,
+      required this.message,
+      required this.time});
 
   @override
   Widget build(BuildContext context) {

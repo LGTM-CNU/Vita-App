@@ -19,6 +19,8 @@ dependencies:
   firebase_storage: ^11.0.10
   path_provider: ^2.0.12
   audio_session: ^0.1.13
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -34,3 +36,5 @@ flutter:
     - assets/medicine2.png
     - assets/medicine3.png
     - assets/medicine4.png
+flutter_intl:
+  enabled: true

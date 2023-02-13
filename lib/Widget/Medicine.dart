@@ -34,6 +34,7 @@ class _MedicineWidgetState extends State<MedicineWidget> {
                       children: [
                         for (var i = 0; i < _medicines.length; i++) ...[
                           MedicineCard(
+                            medicineID: i,
                             title: _medicines[i]['title'] as String,
                             color: i % 4 == 1 || i % 4 == 2
                                 ? 0xfff8d1af

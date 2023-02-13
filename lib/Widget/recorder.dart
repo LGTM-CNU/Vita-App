@@ -7,7 +7,12 @@ import 'package:audio_session/audio_session.dart';
 
 import 'package:vita/Util/Firebase.dart';
 
+import '../Util/date.dart';
+import 'ChatMessage.dart';
+
 class Recorder extends StatefulWidget {
+  final addChatMessage;
+  const Recorder({super.key, required this.addChatMessage});
   @override
   _RecorderState createState() => _RecorderState();
 }
@@ -16,6 +21,8 @@ class _RecorderState extends State<Recorder> {
   final recorder = FlutterSoundRecorder();
   bool isRecorderReady = false;
   bool isRecord = false;
+  bool finishRecorded = false;
+  var audioFile;
 
   Future record() async {
     if (!isRecorderReady) return;
@@ -23,6 +30,7 @@ class _RecorderState extends State<Recorder> {
 
     setState(() {
       isRecord = true;
+      audioFile = null;
     });
 
     print("record start !!!!!!!!!!!!!!!!");
@@ -31,15 +39,25 @@ class _RecorderState extends State<Recorder> {
   Future stop() async {
     if (!isRecorderReady) return;
     final path = await recorder.stopRecorder();
-    final audioFile = File(path!);
 
     setState(() {
       isRecord = false;
+      finishRecorded = true;
+      audioFile = File(path!);
     });
+  }
 
-    print('record audio: $audioFile');
+  Future send() async {
+    if (audioFile == null) return;
 
-    await Firebase.save(audioFile);
+    final res = await Firebase.save(audioFile);
+
+    if (res == 'Error') return;
+
+    widget.addChatMessage(ChatMessage(
+        isMe: true,
+        message: "음성 메세지 입니다.",
+        time: Date.serialize(DateTime.now())));
   }
 
   Future initRecorder() async {
@@ -79,6 +97,12 @@ class _RecorderState extends State<Recorder> {
     );
   }
 
+  _getRecordIcon() {
+    if (isRecord) return (Icons.stop);
+    if (!finishRecorded) return (Icons.mic);
+    return Icons.replay;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -94,7 +118,7 @@ class _RecorderState extends State<Recorder> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 300,
       child: Center(
           child: Column(
@@ -115,18 +139,52 @@ class _RecorderState extends State<Recorder> {
                   ),
                 );
               }),
-          ElevatedButton(
-            child: Icon(
-              isRecord ? Icons.stop : Icons.mic,
-              size: 80,
-            ),
-            onPressed: () async {
-              if (isRecord) {
-                await stop();
-              } else {
-                await record();
-              }
-            },
+          Row(
+            children: [
+              const Spacer(),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: const Text(
+                  "취소",
+                  style: TextStyle(fontSize: 15, color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const Spacer(),
+              ElevatedButton(
+                child: Icon(
+                  _getRecordIcon(),
+                  size: 40,
+                ),
+                onPressed: () async {
+                  if (isRecord) {
+                    await stop();
+                  } else {
+                    await record();
+                  }
+                },
+              ),
+              const Spacer(),
+              ElevatedButton(
+                child: const Icon(
+                  Icons.send,
+                  size: 40,
+                ),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        audioFile == null ? Colors.grey : Colors.orange),
+                onPressed: () async {
+                  await send();
+                  Navigator.of(context).pop();
+                },
+              ),
+              const Spacer(),
+            ],
           )
         ],
       )),

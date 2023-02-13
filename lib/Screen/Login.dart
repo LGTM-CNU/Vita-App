@@ -29,6 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
     // check id, pw
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setBool('isLogin', true);
+    pref.setString("id", _username);
+
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(

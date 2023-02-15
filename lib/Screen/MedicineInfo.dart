@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:vita/Util/fetcher.dart';
 
 import 'package:vita/Widget/TimePicker.dart';
+
+import '../Util/user.dart';
 
 class MedicineInfoArgs {
   final int medicineID;
@@ -15,9 +20,9 @@ class MedicineInfo extends StatefulWidget {
 
 class _MedicineInfoState extends State<MedicineInfo> {
   var _selectedMedicineType;
-  var _medicineName = '';
-  var _selectedDate;
-  final _textController = TextEditingController();
+  var _randomImg = "assets/medicine2.png";
+  final _medicineNameTextController = TextEditingController();
+  final _descriptionTextController = TextEditingController();
 
   var selectedTimeList = [];
 
@@ -42,17 +47,62 @@ class _MedicineInfoState extends State<MedicineInfo> {
     {'text': '기타', 'value': 'etc'}
   ];
 
+  _getMedicineInfo(args) async {
+    final res = jsonDecode(
+        (await Fetcher.fetch('get', '/api/v1/medicine/${args.medicineID}', {}))
+            .body);
+    print(res);
+    setState(() {
+      _medicineNameTextController.text = res['name'];
+      _selectedMedicineType = res['type'];
+      _randomImg = res['thumbnail'];
+      selectedTimeList = res['time']
+          .map((value) => TimeOfDay(
+              hour: int.parse(value.split(':')[0]),
+              minute: int.parse(value.split(':')[1])))
+          .toList();
+      for (var i = 0; i < _isSelectedDays.length; i++) {
+        _isSelectedDays[i]['checked'] = res['repeat'][i] == '1';
+      }
+      _descriptionTextController.text = res['description'];
+    });
+  }
+
+  _updateMedicineHandler() async {
+    final medicineId =
+        (ModalRoute.of(context)!.settings.arguments as MedicineInfoArgs)
+            .medicineID;
+    final userId = await User.getUserId();
+    final res = Fetcher.fetch(
+        'patch',
+        '/api/v1/medicine/$medicineId',
+        jsonEncode({
+          "name": _medicineNameTextController.text,
+          "type": _selectedMedicineType,
+          "description": _descriptionTextController.text,
+          "thumbnail": _randomImg,
+          "userId": userId,
+          "time": selectedTimeList
+              .map((value) => "${value.hour}:${value.minute}")
+              .toList(),
+          "repeat": _isSelectedDays.fold("", (prev, element) {
+            return element['checked'] == true ? "${prev}1" : "${prev}0";
+          }),
+        }));
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    Future.delayed(Duration.zero, () {
+      final args =
+          ModalRoute.of(context)!.settings.arguments as MedicineInfoArgs;
+      _getMedicineInfo(args);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as MedicineInfoArgs;
-    print('${args?.medicineID}');
-
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -69,15 +119,16 @@ class _MedicineInfoState extends State<MedicineInfo> {
               child: Container(
                   width: 100,
                   height: 100,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       image: DecorationImage(
-                    image: AssetImage("assets/medicine1.png"),
+                    image: AssetImage(_randomImg),
                   ))),
             ),
             Container(
               padding: const EdgeInsets.all(15),
               width: 200,
               child: TextField(
+                controller: _medicineNameTextController,
                 decoration: const InputDecoration(
                   hintText: '약의 이름을 적어주세요.',
                   border: InputBorder.none,
@@ -85,7 +136,7 @@ class _MedicineInfoState extends State<MedicineInfo> {
                 style: const TextStyle(color: Colors.black),
                 onChanged: (value) {
                   setState(() {
-                    _medicineName = value;
+                    _medicineNameTextController.text = value;
                   });
                 },
               ),
@@ -110,7 +161,7 @@ class _MedicineInfoState extends State<MedicineInfo> {
             Container(
               padding: const EdgeInsets.all(10),
               child: TextField(
-                controller: _textController,
+                controller: _descriptionTextController,
                 maxLines: 4,
                 decoration: InputDecoration(
                   hintText: "약에 대한 설명을 적어주세요.",
@@ -203,7 +254,6 @@ class _MedicineInfoState extends State<MedicineInfo> {
                 const Spacer(),
                 OutlinedButton(
                   onPressed: () {
-                    var answer = false;
                     // fetch to server with medicine data
                     showDialog(
                       context: context,
@@ -221,7 +271,6 @@ class _MedicineInfoState extends State<MedicineInfo> {
                             ElevatedButton(
                               child: const Text('삭제하기'),
                               onPressed: () {
-                                answer = true;
                                 // Add your delete logic here
                                 Navigator.of(context).pop();
                                 Navigator.of(context).pop();
@@ -243,8 +292,8 @@ class _MedicineInfoState extends State<MedicineInfo> {
                 ),
                 const Spacer(),
                 OutlinedButton(
-                  onPressed: () {
-                    // fetch to server with medicine data
+                  onPressed: () async {
+                    await _updateMedicineHandler();
                     Navigator.of(context).pop();
                   },
                   style: OutlinedButton.styleFrom(

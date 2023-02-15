@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:vita/Screen/Main.dart';
+import 'package:vita/Util/fetcher.dart';
+
+import '../Util/user.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,8 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String _password = "";
 
   void _loadIsLogin() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var value = pref.getBool('isLogin');
+    var value = User.getIsLogin();
 
     if (value != null && value) {
       Navigator.pushReplacement(
@@ -26,10 +29,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _loginHandler() async {
-    // check id, pw
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setBool('isLogin', true);
-    pref.setString("id", _username);
+    final res = await Fetcher.fetch('get', '/api/v1/user/$_username', {});
+    print(
+        'login :: ${json.decode(res.body)['id']} :: ${json.decode(res.body)['mode']}');
+    User.setIsLogin(res.statusCode == 200);
+    User.setUserId(json.decode(res.body)['id']);
+    User.setUserMode(json.decode(res.body)['mode']);
 
     Navigator.pushReplacement(
         context,
@@ -48,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("로그인")),
+      appBar: AppBar(title: const Text("로그인")),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

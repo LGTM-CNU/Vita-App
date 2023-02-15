@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:vita/Util/fetcher.dart';
 
 import 'package:vita/Widget/MedicineCard.dart';
+
+import '../Util/user.dart';
 
 class MedicineWidget extends StatefulWidget {
   @override
@@ -8,11 +13,23 @@ class MedicineWidget extends StatefulWidget {
 }
 
 class _MedicineWidgetState extends State<MedicineWidget> {
-  final _medicines = [
-    {'title': "비타민 C", 'thumbnail': 'assets/medicine1.png', 'type': "건강 보조 식품"},
-    {'title': "비타민 D", 'thumbnail': 'assets/medicine2.png', 'type': "건강 보조 식품"},
-    {'title': "비타민 Z", 'thumbnail': 'assets/medicine3.png', 'type': "보노보노 식품"},
-  ];
+  var _medicines = [];
+
+  _getMedicines() async {
+    final userId = await User.getUserId();
+    final res = jsonDecode(
+        (await Fetcher.fetch('get', '/api/v1/user/$userId/medicines', {}))
+            .body);
+    setState(() {
+      _medicines = res;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getMedicines();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +51,8 @@ class _MedicineWidgetState extends State<MedicineWidget> {
                       children: [
                         for (var i = 0; i < _medicines.length; i++) ...[
                           MedicineCard(
-                            medicineID: i,
-                            title: _medicines[i]['title'] as String,
+                            medicineID: _medicines[i]['id'],
+                            title: _medicines[i]['name'] as String,
                             color: i % 4 == 1 || i % 4 == 2
                                 ? 0xfff8d1af
                                 : 0xfffdf4d7,
@@ -45,7 +62,14 @@ class _MedicineWidgetState extends State<MedicineWidget> {
                         ],
                         InkWell(
                           onTap: () {
-                            Navigator.of(context).pushNamed('/new_medicine');
+                            Navigator.of(context)
+                                .pushNamed('/new_medicine')
+                                .then((res) {
+                              if (res == null) return;
+                              setState(() {
+                                _medicines.add(jsonDecode(res as String));
+                              });
+                            });
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(10),

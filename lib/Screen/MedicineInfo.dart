@@ -37,14 +37,14 @@ class _MedicineInfoState extends State<MedicineInfo> {
   ];
 
   final _medicineTypes = [
-    {'text': '영양제', 'value': 'vitamin'},
-    {'text': '감기약', 'value': 'cold_medicine'},
-    {'text': '해열 진통 소염제', 'value': 'anti_inflammatory'},
-    {'text': '피부약', 'value': 'skin_medicine'},
-    {'text': '연고', 'value': 'ointment'},
-    {'text': '신경 정신과', 'value': 'neuropsychiatric_drug'},
-    {'text': '한약', 'value': 'oriental_medicine'},
-    {'text': '기타', 'value': 'etc'}
+    '영양제',
+    '감기약',
+    '해열 진통 소염제',
+    '피부약',
+    '연고',
+    '신경 정신과',
+    '한약',
+    '기타'
   ];
 
   _getMedicineInfo(args) async {
@@ -147,8 +147,8 @@ class _MedicineInfoState extends State<MedicineInfo> {
               items: [
                 for (var medicine in _medicineTypes) ...[
                   DropdownMenuItem(
-                    value: medicine['value'],
-                    child: Text(medicine['text'] as String),
+                    value: medicine,
+                    child: Text(medicine),
                   )
                 ]
               ],

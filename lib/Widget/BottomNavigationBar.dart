@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:vita/Screen/Login.dart';
 import 'package:vita/Screen/Main.dart';
+
+import '../Util/user.dart';
 
 class BottomNavigationBars extends StatefulWidget {
   @override
@@ -14,8 +15,8 @@ class _BottomNavigationBarsState extends State<BottomNavigationBars> {
   void _onItemTapped(int index) {
     // 개발 모드 예외처리
     if (index == 2) {
-      SharedPreferences.getInstance().then((pref) {
-        pref.setBool('isLogin', false);
+      User.getIsLogin().then((value) {
+        User.setIsLogin(false);
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(

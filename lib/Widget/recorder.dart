@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -19,14 +20,19 @@ class Recorder extends StatefulWidget {
 
 class _RecorderState extends State<Recorder> {
   final recorder = FlutterSoundRecorder();
+
   bool isRecorderReady = false;
   bool isRecord = false;
   bool finishRecorded = false;
+  String path = "";
   var audioFile;
 
   Future record() async {
     if (!isRecorderReady) return;
-    await recorder.startRecorder(toFile: 'temp1.wav', codec: Codec.pcm16WAV);
+    var tempDir = await getTemporaryDirectory();
+    path = '${tempDir.path}/audio.wav';
+
+    await recorder.startRecorder(toFile: path, codec: Codec.pcm16WAV);
 
     setState(() {
       isRecord = true;
@@ -38,7 +44,9 @@ class _RecorderState extends State<Recorder> {
 
   Future stop() async {
     if (!isRecorderReady) return;
-    final path = await recorder.stopRecorder();
+    await recorder.stopRecorder();
+
+    print('===============$path==================');
 
     setState(() {
       isRecord = false;
@@ -50,9 +58,9 @@ class _RecorderState extends State<Recorder> {
   Future send() async {
     if (audioFile == null) return;
 
-    final res = await Firebase.save(audioFile);
+    print('============== $audioFile =================');
 
-    if (res == 'Error') return;
+    await Firebase.save(audioFile);
 
     widget.addChatMessage(ChatMessage(
         isMe: true,
@@ -85,10 +93,13 @@ class _RecorderState extends State<Recorder> {
         usage: AndroidAudioUsage.voiceCommunication,
       ),
       androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
-      androidWillPauseWhenDucked: true,
+      androidWillPauseWhenDucked: false,
     ));
 
+    print("before open recorder");
     await recorder.openRecorder();
+
+    print("after open recorder");
 
     isRecorderReady = true;
 

@@ -51,7 +51,6 @@ class _MedicineInfoState extends State<MedicineInfo> {
     final res = jsonDecode(
         (await Fetcher.fetch('get', '/api/v1/medicine/${args.medicineID}', {}))
             .body);
-    print(res);
     setState(() {
       _medicineNameTextController.text = res['name'];
       _selectedMedicineType = res['type'];
@@ -89,6 +88,15 @@ class _MedicineInfoState extends State<MedicineInfo> {
             return element['checked'] == true ? "${prev}1" : "${prev}0";
           }),
         }));
+  }
+
+  _deleteMedicineHandler() async {
+    final medicineId =
+        (ModalRoute.of(context)!.settings.arguments as MedicineInfoArgs)
+            .medicineID;
+    final res = await Fetcher.fetch(
+        'delete', '/api/v1/medicine/$medicineId', jsonEncode({}));
+    return res.body;
   }
 
   @override
@@ -270,10 +278,10 @@ class _MedicineInfoState extends State<MedicineInfo> {
                             ),
                             ElevatedButton(
                               child: const Text('삭제하기'),
-                              onPressed: () {
-                                // Add your delete logic here
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
+                              onPressed: () async {
+                                final res = await _deleteMedicineHandler();
+                                Navigator.of(context).pop(res);
+                                Navigator.of(context).pop(res);
                               },
                             ),
                           ],

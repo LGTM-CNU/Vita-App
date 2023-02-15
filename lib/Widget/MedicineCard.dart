@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:vita/Screen/MedicineInfo.dart';
+
+import 'package:vita/Widget/Medicine.dart';
 
 class MedicineCard extends StatefulWidget {
   const MedicineCard(
@@ -27,7 +31,19 @@ class _MedicineCardState extends State<MedicineCard> {
       onTap: () async {
         // fetch 이후 args 로 넘겨주기
         Navigator.pushNamed(context, "/medicine_info",
-            arguments: MedicineInfoArgs(widget.medicineID));
+                arguments: MedicineInfoArgs(widget.medicineID))
+            .then((res) {
+          if (res == null) return;
+          MedicineWidgetState? parent =
+              context.findAncestorStateOfType<MedicineWidgetState>();
+          if (parent == null) return;
+          final deletedMedicine = jsonDecode(res as String);
+          parent.setState(() {
+            parent.medicines = parent.medicines
+                .where((element) => element['id'] != deletedMedicine['id'])
+                .toList();
+          });
+        });
       },
       child: Padding(
         padding: const EdgeInsets.all(10),

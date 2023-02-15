@@ -9,11 +9,11 @@ import '../Util/user.dart';
 
 class MedicineWidget extends StatefulWidget {
   @override
-  _MedicineWidgetState createState() => _MedicineWidgetState();
+  MedicineWidgetState createState() => MedicineWidgetState();
 }
 
-class _MedicineWidgetState extends State<MedicineWidget> {
-  var _medicines = [];
+class MedicineWidgetState extends State<MedicineWidget> {
+  var medicines = [];
 
   _getMedicines() async {
     final userId = await User.getUserId();
@@ -21,7 +21,7 @@ class _MedicineWidgetState extends State<MedicineWidget> {
         (await Fetcher.fetch('get', '/api/v1/user/$userId/medicines', {}))
             .body);
     setState(() {
-      _medicines = res;
+      medicines = res;
     });
   }
 
@@ -49,15 +49,15 @@ class _MedicineWidgetState extends State<MedicineWidget> {
                       runSpacing: 20.0,
                       spacing: 20.0,
                       children: [
-                        for (var i = 0; i < _medicines.length; i++) ...[
+                        for (var i = 0; i < medicines.length; i++) ...[
                           MedicineCard(
-                            medicineID: _medicines[i]['id'],
-                            title: _medicines[i]['name'] as String,
+                            medicineID: medicines[i]['id'],
+                            title: medicines[i]['name'] as String,
                             color: i % 4 == 1 || i % 4 == 2
                                 ? 0xfff8d1af
                                 : 0xfffdf4d7,
-                            thumbnail: _medicines[i]['thumbnail'] as String,
-                            type: _medicines[i]['type'] as String,
+                            thumbnail: medicines[i]['thumbnail'] as String,
+                            type: medicines[i]['type'] as String,
                           )
                         ],
                         InkWell(
@@ -67,7 +67,7 @@ class _MedicineWidgetState extends State<MedicineWidget> {
                                 .then((res) {
                               if (res == null) return;
                               setState(() {
-                                _medicines.add(jsonDecode(res as String));
+                                medicines.add(jsonDecode(res as String));
                               });
                             });
                           },
@@ -84,7 +84,7 @@ class _MedicineWidgetState extends State<MedicineWidget> {
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(10)),
                                   color: Color(
-                                      4 % 4 == 1 || _medicines.length % 4 == 2
+                                      4 % 4 == 1 || medicines.length % 4 == 2
                                           ? 0xfff8d1af
                                           : 0xfffdf4d7),
                                 ),

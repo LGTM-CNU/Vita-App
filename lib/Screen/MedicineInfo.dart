@@ -180,7 +180,15 @@ class _MedicineInfoState extends State<MedicineInfo> {
               ),
             ),
             for (var i = 0; i < selectedTimeList.length; i++) ...[
-              TimePicker(selectedTime: selectedTimeList[i], index: i)
+              TimePicker(
+                selectedTime: selectedTimeList[i],
+                index: i,
+                deleteTimeHandler: () {
+                  setState(() {
+                    selectedTimeList.removeAt(i);
+                  });
+                },
+              )
             ],
             ElevatedButton(
               onPressed: () {

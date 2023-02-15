@@ -5,9 +5,13 @@ import 'package:vita/Screen/NewMedicine.dart';
 class TimePicker extends StatefulWidget {
   final selectedTime;
   final index;
+  final deleteTimeHandler;
 
   const TimePicker(
-      {super.key, required this.selectedTime, required this.index});
+      {super.key,
+      required this.selectedTime,
+      required this.index,
+      required this.deleteTimeHandler});
 
   @override
   _TimePickerState createState() => _TimePickerState();
@@ -31,8 +35,6 @@ class _TimePickerState extends State<TimePicker> {
 
   @override
   Widget build(BuildContext context) {
-    NewMedicineState? parentState =
-        context.findAncestorStateOfType<NewMedicineState>();
     return Row(
       children: [
         const Spacer(),
@@ -47,10 +49,7 @@ class _TimePickerState extends State<TimePicker> {
           padding: const EdgeInsets.only(left: 20),
           child: ElevatedButton(
             onPressed: () {
-              if (parentState!.selectedTimeList == null) return;
-              parentState.setState(() {
-                parentState.selectedTimeList.removeAt(widget.index);
-              });
+              widget.deleteTimeHandler();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,

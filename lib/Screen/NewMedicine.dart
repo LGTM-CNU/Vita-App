@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:vita/Util/fetcher.dart';
 
 import 'package:vita/Widget/TimePicker.dart';
+
+import '../Util/user.dart';
 
 class NewMedicine extends StatefulWidget {
   @override
@@ -12,8 +16,7 @@ class NewMedicineState extends State<NewMedicine> {
   var _selectedMedicineType;
   var _medicineName = '';
   var _randomImg = '';
-  var _selectedDate;
-  final _textController = TextEditingController();
+  final _descriptionTextController = TextEditingController();
 
   var selectedTimeList = [];
 
@@ -45,6 +48,26 @@ class NewMedicineState extends State<NewMedicine> {
     {'text': '기타', 'value': 'etc'}
   ];
 
+  _medicineRegisterHandler() async {
+    final userId = await User.getUserId();
+    final res = Fetcher.fetch(
+        'post',
+        '/api/v1/medicine',
+        jsonEncode({
+          "name": _medicineName,
+          "type": _selectedMedicineType,
+          "description": _descriptionTextController.text,
+          "thumbnail": _randomImg,
+          "userId": userId,
+          "time": selectedTimeList
+              .map((value) => "${value.hour}:${value.minute}")
+              .toList(),
+          "repeat": _isSelectedDays.fold("", (prev, element) {
+            return element['checked'] == true ? "${prev}1" : "${prev}0";
+          }),
+        }));
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -53,6 +76,12 @@ class NewMedicineState extends State<NewMedicine> {
     setState(() {
       _randomImg = _medicineImg[random.nextInt(4)];
     });
+  }
+
+  @override
+  void dispose() {
+    _descriptionTextController.dispose();
+    super.dispose();
   }
 
   @override
@@ -114,7 +143,7 @@ class NewMedicineState extends State<NewMedicine> {
             Container(
               padding: const EdgeInsets.all(10),
               child: TextField(
-                controller: _textController,
+                controller: _descriptionTextController,
                 maxLines: 4,
                 decoration: InputDecoration(
                   hintText: "약에 대한 설명을 적어주세요.",
@@ -206,8 +235,8 @@ class NewMedicineState extends State<NewMedicine> {
                 ),
                 const Spacer(),
                 OutlinedButton(
-                  onPressed: () {
-                    // fetch to server with medicine data
+                  onPressed: () async {
+                    await _medicineRegisterHandler();
                     Navigator.of(context).pop();
                   },
                   style: OutlinedButton.styleFrom(

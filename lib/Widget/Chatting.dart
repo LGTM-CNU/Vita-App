@@ -4,6 +4,8 @@ import 'package:vita/Widget/ChatMessage.dart';
 import 'package:vita/Widget/Recorder.dart';
 import 'package:vita/Util/date.dart';
 
+import '../Util/user.dart';
+
 class ChattingWidget extends StatefulWidget {
   const ChattingWidget({Key? key}) : super(key: key);
 
@@ -14,6 +16,7 @@ class ChattingWidget extends StatefulWidget {
 class ChattingWidgetState extends State<ChattingWidget> {
   final _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  var _mode = "USER";
 
   final _chattingMessages = <ChatMessage>[
     const ChatMessage(isMe: true, message: "123", time: "2023/02/01 12:30 PM"),
@@ -59,10 +62,17 @@ class ChattingWidgetState extends State<ChattingWidget> {
     FocusScope.of(context).unfocus();
   }
 
+  _getUserMode() async {
+    final mode = await User.getUserMode();
+    setState(() {
+      _mode = mode;
+    });
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    _getUserMode();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
@@ -106,36 +116,37 @@ class ChattingWidgetState extends State<ChattingWidget> {
                                         (BuildContext context, int index) {
                                       return _chattingMessages[index];
                                     }))),
-                        Container(
-                          height: 50,
-                          color: Colors.white,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: TextField(
-                                  controller: _textController,
-                                  textInputAction: TextInputAction.go,
-                                  decoration: const InputDecoration(
-                                    hintText: "Enter a message",
+                        if (_mode == "ADMIN")
+                          Container(
+                            height: 50,
+                            color: Colors.white,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: TextField(
+                                    controller: _textController,
+                                    textInputAction: TextInputAction.go,
+                                    decoration: const InputDecoration(
+                                      hintText: "메시지를 입력해주세요.",
+                                    ),
+                                    onSubmitted: (value) async {
+                                      _onSubmitHandler();
+                                    },
                                   ),
-                                  onSubmitted: (value) async {
-                                    _onSubmitHandler();
-                                  },
+                                )),
+                                IconButton(
+                                  icon: const Icon(Icons.mic),
+                                  onPressed: _onMicPressHandler,
                                 ),
-                              )),
-                              IconButton(
-                                icon: const Icon(Icons.mic),
-                                onPressed: _onMicPressHandler,
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.send),
-                                onPressed: _onSubmitHandler,
-                              ),
-                            ],
-                          ),
-                        ),
+                                IconButton(
+                                  icon: const Icon(Icons.send),
+                                  onPressed: _onSubmitHandler,
+                                ),
+                              ],
+                            ),
+                          )
                       ],
                     )))));
   }

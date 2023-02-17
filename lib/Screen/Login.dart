@@ -17,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String _password = "";
 
   void _loadIsLogin() async {
-    var value = User.getIsLogin();
+    var value = await User.getIsLogin();
 
     if (value != null && value) {
       Navigator.pushReplacement(

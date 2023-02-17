@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:vita/Widget/ChatMessage.dart';
 import 'package:vita/Widget/Recorder.dart';
 import 'package:vita/Util/date.dart';
 
+import '../Util/fetcher.dart';
 import '../Util/user.dart';
 
 class ChattingWidget extends StatefulWidget {
@@ -16,13 +19,37 @@ class ChattingWidget extends StatefulWidget {
 class ChattingWidgetState extends State<ChattingWidget> {
   final _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  var _mode = "USER";
+  var _mode = 'USER';
+  late final _userId;
 
   final _chattingMessages = <ChatMessage>[
-    const ChatMessage(isMe: true, message: "123", time: "2023/02/01 12:30 PM"),
     const ChatMessage(
-        isMe: false, message: "from vita", time: "2023/02/01 02:01 PM"),
+        isMe: false,
+        message: "123",
+        talker: 'vita',
+        time: "2019/02/12 02:20 PM"),
+    const ChatMessage(
+        isMe: false,
+        message: "12aldsfjalksd3",
+        talker: '12312321',
+        time: "2019/02/12 02:20 PM"),
   ];
+
+  _getChattingMessage() async {
+    await _getUserInfo();
+    final res = jsonDecode(
+        (await Fetcher.fetch('get', '/api/v1/chat/$_userId', {})).body);
+
+    setState(() {
+      for (var chat in res) {
+        _chattingMessages.add(ChatMessage(
+            isMe: _userId == chat['talker'],
+            message: chat['content'],
+            talker: chat['talker'],
+            time: Date.serialize(DateTime.parse(chat['createdAt'] as String))));
+      }
+    });
+  }
 
   // aos => AndroidMainfest.xml과 ios => info.plist 추가 해야함
   _onMicPressHandler() {
@@ -52,6 +79,7 @@ class ChattingWidgetState extends State<ChattingWidget> {
     setState(() {
       _chattingMessages.add(ChatMessage(
           isMe: true,
+          talker: _userId,
           message: _textController.text,
           time: Date.serialize(DateTime.now())));
     });
@@ -62,17 +90,19 @@ class ChattingWidgetState extends State<ChattingWidget> {
     FocusScope.of(context).unfocus();
   }
 
-  _getUserMode() async {
+  _getUserInfo() async {
     final mode = await User.getUserMode();
+    final id = await User.getUserId();
     setState(() {
       _mode = mode;
+      _userId = id;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _getUserMode();
+    _getChattingMessage();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });

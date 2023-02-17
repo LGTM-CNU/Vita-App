@@ -9,6 +9,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:vita/Util/Firebase.dart';
 
 import '../Util/date.dart';
+import '../Util/user.dart';
 import 'ChatMessage.dart';
 
 class Recorder extends StatefulWidget {
@@ -26,6 +27,7 @@ class _RecorderState extends State<Recorder> {
   bool finishRecorded = false;
   String path = "";
   var audioFile;
+  late final userId;
 
   Future record() async {
     if (!isRecorderReady) return;
@@ -64,6 +66,7 @@ class _RecorderState extends State<Recorder> {
 
     widget.addChatMessage(ChatMessage(
         isMe: true,
+        talker: userId,
         message: "음성 메세지 입니다.",
         time: Date.serialize(DateTime.now())));
   }
@@ -114,10 +117,15 @@ class _RecorderState extends State<Recorder> {
     return Icons.replay;
   }
 
+  _getUserId() async {
+    return (await User.getUserId());
+  }
+
   @override
   void initState() {
     super.initState();
     initRecorder();
+    userId = _getUserId();
   }
 
   @override

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class ChatMessage extends StatelessWidget {
-  final bool isMe;
+  final String talker;
   final String message;
   final String time;
+  final bool isMe;
 
   const ChatMessage(
       {super.key,
       required this.isMe,
+      required this.talker,
       required this.message,
       required this.time});
 
@@ -25,15 +27,13 @@ class ChatMessage extends StatelessWidget {
                 : Container(
                     width: 35.0,
                     height: 35.0,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(
-                          "https://picsum.photos/id/1005/35/35",
-                        ),
-                      ),
-                    ),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: talker == "vita"
+                              ? const AssetImage("assets/vita-profile.png")
+                              : const AssetImage("assets/user-profile.png"),
+                        )),
                   ),
             const SizedBox(width: 10.0),
             Expanded(

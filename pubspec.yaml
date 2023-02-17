@@ -39,5 +39,8 @@ flutter:
     - assets/medicine2.png
     - assets/medicine3.png
     - assets/medicine4.png
+    - assets/vita-profile.png
+    - assets/user-profile.png
+
 flutter_intl:
   enabled: true

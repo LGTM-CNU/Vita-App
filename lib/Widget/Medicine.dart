@@ -32,8 +32,6 @@ class MedicineWidgetState extends State<MedicineWidget> {
       print('notification not granted !!');
     } else {
       print('notification granted');
-      final fcmToken = await FirebaseMessaging.instance.getToken();
-      print(fcmToken);
     }
   }
 

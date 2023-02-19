@@ -36,9 +36,9 @@ void main() async {
   );
 
   var initialzationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
+      const AndroidInitializationSettings('@mipmap/ic_launcher');
 
-  var initialzationSettingsIOS = IOSInitializationSettings(
+  var initialzationSettingsIOS = const IOSInitializationSettings(
     requestSoundPermission: true,
     requestBadgePermission: true,
     requestAlertPermission: true,

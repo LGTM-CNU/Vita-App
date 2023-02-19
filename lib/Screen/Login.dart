@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:vita/Screen/Main.dart';
@@ -39,7 +40,11 @@ class _LoginScreenState extends State<LoginScreen> {
     User.setUserId(json.decode(res.body)['id']);
     User.setUserMode(json.decode(res.body)['mode']);
 
-    Navigator.pushReplacement(
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    await Fetcher.fetch('post', '/api/v1/push-message/fcm',
+        jsonEncode({"user_id": _username, "fcmToken": fcmToken}));
+
+    await Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => MainScreen(),

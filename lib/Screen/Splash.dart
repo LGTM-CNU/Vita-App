@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Main.dart';
@@ -20,19 +19,9 @@ class _SplashScreenState extends State<SplashScreen> {
     return false;
   }
 
-  Future _checkNotificationPermission() async {
-    final status = await Permission.notification.request();
-    if (!status.isGranted) {
-      print('notification not granted !!');
-    } else {
-      print('not granted');
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    _checkNotificationPermission();
     _checkLogin().then((value) => Timer(const Duration(seconds: 1), () {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) =>

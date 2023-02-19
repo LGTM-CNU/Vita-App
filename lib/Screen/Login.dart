@@ -30,6 +30,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _loginHandler() async {
     final res = await Fetcher.fetch('get', '/api/v1/user/$_username', {});
+
+    print(res);
+    if (res == null) return;
     print(
         'login :: ${json.decode(res.body)['id']} :: ${json.decode(res.body)['mode']}');
     User.setIsLogin(res.statusCode == 200);

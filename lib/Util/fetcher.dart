@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 
 class Fetcher {
-  static const String _baseUrl = "http://localhost:4000";
+  static const String _baseUrl = "http://192.168.0.20:4000";
 
   static Future fetch(method, path, body) async {
     final url = Uri.parse(_baseUrl + path);

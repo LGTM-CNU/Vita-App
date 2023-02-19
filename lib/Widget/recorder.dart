@@ -118,14 +118,15 @@ class _RecorderState extends State<Recorder> {
   }
 
   _getUserId() async {
-    return (await User.getUserId());
+    final id = await User.getUserId();
+    userId = id;
   }
 
   @override
   void initState() {
     super.initState();
     initRecorder();
-    userId = _getUserId();
+    _getUserId();
   }
 
   @override

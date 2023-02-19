@@ -41,8 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
     User.setUserMode(json.decode(res.body)['mode']);
 
     final fcmToken = await FirebaseMessaging.instance.getToken();
-    await Fetcher.fetch('post', '/api/v1/push-message/fcm',
-        jsonEncode({"user_id": _username, "fcmToken": fcmToken}));
+    await Fetcher.fetch('post', '/push-message/fcm',
+        jsonEncode({"userId": _username, "fcmToken": fcmToken}));
 
     await Navigator.pushReplacement(
         context,

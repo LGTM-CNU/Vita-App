@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class Fetcher {
-  static const String _baseUrl = "http://192.168.0.20:4000";
+  static const String _baseUrl =
+      kDebugMode ? "http://192.168.0.20:4000" : "http://13.124.248.18:4000";
 
   static Future fetch(method, path, body) async {
     final url = Uri.parse(_baseUrl + path);

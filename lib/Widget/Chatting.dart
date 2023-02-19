@@ -22,18 +22,7 @@ class ChattingWidgetState extends State<ChattingWidget> {
   var _mode = 'USER';
   late final _userId;
 
-  final _chattingMessages = <ChatMessage>[
-    const ChatMessage(
-        isMe: false,
-        message: "123",
-        talker: 'vita',
-        time: "2019/02/12 02:20 PM"),
-    const ChatMessage(
-        isMe: false,
-        message: "12aldsfjalksd3",
-        talker: '12312321',
-        time: "2019/02/12 02:20 PM"),
-  ];
+  final _chattingMessages = <ChatMessage>[];
 
   _getChattingMessage() async {
     await _getUserInfo();
@@ -71,11 +60,29 @@ class ChattingWidgetState extends State<ChattingWidget> {
     });
   }
 
-  _onSubmitHandler() {
+  _onSubmitHandler(isVoice) async {
     if (_textController.text.isEmpty) {
       FocusScope.of(context).unfocus();
       return;
     }
+
+    final patientId = jsonDecode(
+        (await Fetcher.fetch("get", '/api/v1/user/relation/$_userId', {}))
+            .body);
+
+    final res = await Fetcher.fetch(
+        'post',
+        '/api/v1/chat',
+        jsonEncode({
+          "talker": _userId,
+          "destination": patientId['userId'],
+          "content": _textController.text,
+          "medicineId": null,
+          "alarmed": false,
+          "userId": _userId,
+          "isVoice": isVoice,
+        }));
+
     setState(() {
       _chattingMessages.add(ChatMessage(
           isMe: true,
@@ -162,7 +169,7 @@ class ChattingWidgetState extends State<ChattingWidget> {
                                       hintText: "메시지를 입력해주세요.",
                                     ),
                                     onSubmitted: (value) async {
-                                      _onSubmitHandler();
+                                      await _onSubmitHandler(null);
                                     },
                                   ),
                                 )),
@@ -172,7 +179,9 @@ class ChattingWidgetState extends State<ChattingWidget> {
                                 ),
                                 IconButton(
                                   icon: const Icon(Icons.send),
-                                  onPressed: _onSubmitHandler,
+                                  onPressed: () async {
+                                    await _onSubmitHandler(null);
+                                  },
                                 ),
                               ],
                             ),

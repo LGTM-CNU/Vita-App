@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
@@ -9,6 +10,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:vita/Util/Firebase.dart';
 
 import '../Util/date.dart';
+import '../Util/fetcher.dart';
 import '../Util/user.dart';
 import 'ChatMessage.dart';
 
@@ -62,7 +64,23 @@ class _RecorderState extends State<Recorder> {
 
     print('============== $audioFile =================');
 
-    await Firebase.save(audioFile);
+    final path = await Firebase.save(audioFile);
+
+    final patientId = jsonDecode(
+        (await Fetcher.fetch("get", '/api/v1/user/relation/$userId', {})).body);
+
+    await Fetcher.fetch(
+        'post',
+        '/api/v1/chat',
+        jsonEncode({
+          "talker": userId,
+          "destination": patientId['userId'],
+          "content": "음성 메세지 입니다.",
+          "medicineId": null,
+          "alarmed": false,
+          "userId": userId,
+          "isVoice": path,
+        }));
 
     widget.addChatMessage(ChatMessage(
         isMe: true,

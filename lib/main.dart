@@ -2,6 +2,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:vibration/vibration.dart';
 
 import 'package:vita/Screen/MedicineInfo.dart';
 import 'package:vita/Screen/NewMedicine.dart';
@@ -27,6 +29,18 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    Vibration.vibrate(duration: 1000);
+    Fluttertoast.showToast(
+      msg: '환자가 약을 먹지 않았습니다 !!',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.grey,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  });
 
   channel = const AndroidNotificationChannel(
     'high_importance_channel', // id

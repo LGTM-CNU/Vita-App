@@ -15,10 +15,10 @@ class MedicineInfoArgs {
 
 class MedicineInfo extends StatefulWidget {
   @override
-  _MedicineInfoState createState() => _MedicineInfoState();
+  MedicineInfoState createState() => MedicineInfoState();
 }
 
-class _MedicineInfoState extends State<MedicineInfo> {
+class MedicineInfoState extends State<MedicineInfo> {
   var _selectedMedicineType;
   var _randomImg = "assets/medicine2.png";
   final _medicineNameTextController = TextEditingController();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:vita/Screen/NewMedicine.dart';
+import 'package:vita/Screen/MedicineInfo.dart';
 
 class TimePicker extends StatefulWidget {
   final selectedTime;
@@ -19,8 +20,11 @@ class TimePicker extends StatefulWidget {
 
 class _TimePickerState extends State<TimePicker> {
   Future<void> _selectTime(BuildContext context) async {
-    NewMedicineState? parentState =
+    NewMedicineState? newParentState =
         context.findAncestorStateOfType<NewMedicineState>();
+
+    MedicineInfoState? parentState =
+        context.findAncestorStateOfType<MedicineInfoState>();
 
     final TimeOfDay? picked = await showTimePicker(
         context: context, initialTime: widget.selectedTime);
@@ -29,6 +33,13 @@ class _TimePickerState extends State<TimePicker> {
         parentState != null) {
       parentState.setState(() {
         parentState.selectedTimeList[widget.index] = picked;
+      });
+    }
+    if (picked != null &&
+        picked != widget.selectedTime &&
+        newParentState != null) {
+      newParentState.setState(() {
+        newParentState.selectedTimeList[widget.index] = picked;
       });
     }
   }
